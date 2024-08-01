@@ -240,6 +240,26 @@ app.get("/odop-calc",isAdmin, async (req, res) => {
     res.render("admin-odop-cal.ejs", {qus_data : qus_data});
 });
 
+app.get("/odop-stats",isAdmin, async (req, res) => {
+    try {
+        const id = "1";
+        const student = await Students.find({mentee_id:id});
+        res.render("student-stats-by-admin.ejs", { StaffName: staff_name, image_url: currnt_image_url, Student_datas:student });
+    } catch (err) {
+        console.error(err);
+    }
+});
+
+app.get("/odop-stats/info",isAdmin, async (req, res) => {
+    const particular_std_id= req.query.std_id;
+    try {
+        const student_data = await Students.find({reg_no:particular_std_id});
+        res.render("particular-student-stats-by-admin.ejs", {StaffName:staff_name,image_url: currnt_image_url, student_data:student_data[0]});
+    } catch (err) {
+        console.error(err);
+    }
+});
+
 app.get("/dashboard",checkAuth, async (req, res) => {
         const success = req.query.success;
         res.render("staff-dashboard.ejs", {
