@@ -48,10 +48,6 @@
                     <div class="label">Reg No:</div>
                     <div class="value"><%=student_data.reg_no%></div>
                 </div>
-                <div class="detail-row">
-                    <div class="label">Average Marks:</div>
-                    <div class="value">89</div>
-                </div>
 
 
             <table class="marks-table">
@@ -60,27 +56,25 @@
                         <th>ODOP Weeks</th>
                         <th>Remarks</th>
                         <th>Marks</th>
+                        <th>Grade</th>
                         <th>Submited Date</th>
                         <th>Open</th>
                     </tr>
                 </thead>
                 <tbody>
-                    
-                    <tr>
-                        <td class="day">Week 1</td>
-                        <td>Lorem ipsum dolor sit amet consectetur adipisicing elit.</td>
-                        <td>36</td>
-                        <td>17/09/2024</td>
-                        <td><a href="/student-stats/info/report?week=1"><button class="open-btn">Open</button></a></td>
-                    </tr>
-                    <tr>
-                        <td class="day">Week 2</td>
-                        <td>Submited super explained</td>
-                        <td>25</td>
-                        <td>17/09/2024</td>
-                        <td><a href="/student-stats/info/report?week=2"><button class="open-btn">Open</button></a></td>
-                    </tr>
-                    
+                    <% 
+                        let weekCounter = 1; 
+                        std_ans.forEach(function(data){ 
+                        %>
+                        <tr>
+                            <td class="day">Week <%= weekCounter %></td>
+                            <td><%=data.remarks%></td>
+                            <td><%=data.marks%></td>
+                            <td><%=data.grade%></td>
+                            <td><%=data.submited_date%></td>
+                            <td><a href="/student-stats/info/report?date=<%=data.submited_date%>"><button class="open-btn">Open</button></a></td>
+                        </tr>
+                        <% weekCounter++; }); %>
                 </tbody>
             </table>
 

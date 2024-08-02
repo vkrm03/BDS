@@ -47,10 +47,6 @@
                     <div class="label">Reg No:</div>
                     <div class="value"><%=student_data.reg_no%></div>
                 </div>
-                <div class="detail-row">
-                    <div class="label">Average Marks:</div>
-                    <div class="value">89</div>
-                </div>
 
 
             <table class="marks-table">
@@ -59,6 +55,7 @@
                         <th>ODOP Weeks</th>
                         <th>Remarks</th>
                         <th>Marks</th>
+                        <th>Grade</th>
                         <th>Submited Date</th>
                         <th>Open</th>
                     </tr>
@@ -71,9 +68,11 @@
                         %>
                         <tr>
                             <td class="day">Week <%= weekCounter %></td>
-                            <td><%=data.question%></td>
-                            <td><%=data.std_reg_no%></td>
-                            <td><%=data.submitted_date%></td>
+                            <td><%=data.remarks%></td>
+                            <td><%=data.marks%></td>
+                            <td><%=data.grade%></td>
+                            <td><%=data.submited_date%></td>
+                            <td><a href="/my-stats/report?date=<%=data.submited_date%>"><button class="open-btn">Open</button></a></td>
                         </tr>
                         <% weekCounter++; }); %>
                     

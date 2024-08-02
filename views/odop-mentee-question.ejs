@@ -40,9 +40,7 @@
         <div class="main-content">
             <h1>ODOP Question</h1>
             <form action="/odop-mentee-question" method="post">
-                <% if (latestQue) { %>
-                    <h4 name="que"><%= latestQue.question %></h4>
-                    <input type="hidden" name="question" value="<%= latestQue.question %>">
+                    <textarea name="question" id="odop-ques" maxlength="150" style="margin-bottom: 20px;" placeholder="Enter the ODOP Question Here"></textarea>
                     <div class="datetime-container">
                         <label for="deadline">Deadline Time :</label>
                         <input type="datetime-local" name="deadline" id="deadline" required>
@@ -56,10 +54,6 @@
                       <div class="submit-btn">
                         <button class="submit" type="submit">Submit</button>
                       </div>
-                  <% } else { %>
-                    <h4>No questions available</h4>
-                    <input type="hidden" name="question" value="">
-                  <% } %>
               </form>
               
         </div>

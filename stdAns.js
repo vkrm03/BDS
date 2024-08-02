@@ -7,6 +7,9 @@ const stdansSchema = new mongoose.Schema({
     output : { type: String, required: true },
     std_reg_no : { type: String, required: true },
     submited_date: { type: String, required: true },
+    remarks: { type: String, required: true },
+    marks: { type: String, required: true },
+    grade: { type: String, required: true },
 });
 
 const stdAns = mongoose.model('stdanswers', stdansSchema);

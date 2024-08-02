@@ -8,12 +8,12 @@ const Students = require("./db")
 const Question = require("./question")
 const menteeQue = require("./menteeQues")
 const stdAns = require("./stdAns")
-const report = require("./report")
+const login = require("./login")
 const mongoose = require('mongoose');
 
+// mongodb+srv://vkrm:vkrm03@mentormentee.gzg8smk.mongodb.net/BDS_DB
 
-
-mongoose.connect("mongodb+srv://vkrm:vkrm03@mentormentee.gzg8smk.mongodb.net/BDS_DB").then(() => {
+mongoose.connect("mongodb://localhost:27017/BDS_DB").then(() => {
     console.log("Connected to DB");
   }).catch(err => {
     console.log(err);
@@ -136,7 +136,7 @@ app.post("/login", async (req, res) => {
                 res.redirect("/login?error=An error occurred");
             }
         } else if (currnt_role === "std") {
-            const reg = req.body.regno;
+            let reg = req.body.regno;
             const dob = req.body.passordob;
             Admin = false;
             Std_Mentee = false;
@@ -236,7 +236,7 @@ app.get("/edit-admin",isAdmin, async (req, res) => {
 });
 
 app.get("/odop-calc",isAdmin, async (req, res) => {
-    const qus_data = await Question.find();
+    const qus_data = await menteeQue.find();
     res.render("admin-odop-cal.ejs", {qus_data : qus_data});
 });
 
@@ -254,7 +254,8 @@ app.get("/odop-stats/info",isAdmin, async (req, res) => {
     const particular_std_id= req.query.std_id;
     try {
         const student_data = await Students.find({reg_no:particular_std_id});
-        res.render("particular-student-stats-by-admin.ejs", {StaffName:staff_name,image_url: currnt_image_url, student_data:student_data[0]});
+        const std_ans_data = await stdAns.find({std_reg_no:particular_std_id});
+        res.render("particular-student-stats-by-admin.ejs", {StaffName:staff_name,image_url: currnt_image_url, student_data:student_data[0], std_ans : std_ans_data});
     } catch (err) {
         console.error(err);
     }
@@ -336,7 +337,8 @@ app.get("/student-stats/info",checkAuth, async (req, res) => {
     const particular_std_id= req.query.std_id;
     try {
         const student_data = await Students.find({reg_no:particular_std_id});
-        res.render("particular-student-stats.ejs", {StaffName:staff_name,image_url: currnt_image_url, student_data:student_data[0]});
+        const ans_data = await stdAns.find({std_reg_no:particular_std_id});
+        res.render("particular-student-stats.ejs", {StaffName:staff_name,image_url: currnt_image_url, student_data:student_data[0], std_ans:ans_data});
     } catch (err) {
         console.error(err);
     }
@@ -344,9 +346,23 @@ app.get("/student-stats/info",checkAuth, async (req, res) => {
 
 app.get("/student-stats/info/report",checkAuth, async (req, res) => {
     try {
-        res.render("std-report-by-staff.ejs", {StaffName:staff_name,image_url: currnt_image_url});
+        const ans_data = await stdAns.find({submited_date:req.query.date});
+        res.render("std-report-by-staff.ejs", {StaffName:staff_name,image_url: currnt_image_url, ans_data :ans_data[0]});
     } catch (err) {
         console.error(err);
+    }
+});
+
+app.post("/student-stats/info/report",checkAuth, async (req, res) => {
+    try {
+        const date = req.query.date;
+        const remarks = req.body.remarks;
+        const mark = req.body.marks;
+        const grade = req.body.grade;
+        const update_std_ans = await stdAns.findOneAndUpdate({submited_date:date}, {remarks: remarks, marks:mark, grade:grade});
+        res.redirect("/student-stats");
+    } catch {
+        console.log("Error");
     }
 });
 
@@ -356,8 +372,6 @@ app.get("/std-mentee-dashboard",isMentee, async (req, res) => {
 });
 
 app.get("/odop-std-mentee-question",isMentee, async (req, res) => {
-    const questions = await Question.find();
-    const latestQue = questions.length > 0 ? questions.slice(-1)[0] : null;
     res.render("odop-std-mentee-question.ejs", {std_data: std_data, latestQue : latestQue, isPosted : req.query.isPosted});
 });
 
@@ -449,8 +463,9 @@ app.get("/odop-std-question",isStd, async (req, res) => {
         const student_data = await Students.find({reg_no:Reg});
         const current_mentee_id = student_data[0].mentee_id;
         const ques = await menteeQue.find({mentee_id : current_mentee_id});
-        const latestQue = ques.length > 0 ? ques.slice(-1)[0] : null;
+        const latestQue = ques.length > 0 ? ques.slice(-1)[0] : "empty";
         res.render("my-odop.ejs", {std_data: student_data[0], que : latestQue})
+
     } catch {
         res.redirect("/student-dashboard");
     }
@@ -461,7 +476,7 @@ app.post("/odop-std-question",isStd, async (req, res) => {
     try {
         const student_data = await Students.find({reg_no:Reg});
         const current_date_and_time = Date_and_time();
-        const ans = await stdAns.create({question : req.body.question, ans : req.body.odopans,output : req.body.odopoutput,std_reg_no : student_data[0].reg_no, submited_date : current_date_and_time});
+        const ans = await stdAns.create({question : req.body.question, ans : req.body.odopans,output : req.body.odopoutput,std_reg_no : student_data[0].reg_no, submited_date : current_date_and_time,remarks : "Not Corrected yet", marks : "Not Corrected yet", grade : "Not Corrected yet"});
         res.redirect("/my-stats")
     } catch {
         res.redirect("/odop-std-question");
@@ -478,7 +493,7 @@ app.get("/edit-my",isStd, async (req, res) => {
 app.get("/my-stats",isStd, async (req, res) => {
     try {
         const student_data = await Students.find({reg_no:Reg});
-        const ans_data = await stdAns.find({reg_no:Reg});
+        const ans_data = await stdAns.find({std_reg_no:Reg});
         res.render("my-stats.ejs", {std_mentee_name:std_data,student_data:student_data[0], std_ans : ans_data});
     } catch (err) {
         console.error(err);
@@ -488,7 +503,8 @@ app.get("/my-stats",isStd, async (req, res) => {
 app.get("/my-stats/report",isStd, async (req, res) => {
     try {
         const student_data = await Students.find({reg_no:Reg});
-        res.render("my-stats-report.ejs", {std_mentee_name:std_data,student_data:student_data[0]});
+        const ans_data = await stdAns.find({std_reg_no:Reg, submited_date: req.query.date});
+        res.render("my-stats-report.ejs", {std_mentee_name:std_data,student_data:student_data[0], ans_data : ans_data[0]});
     } catch (err) {
         console.error(err);
     }

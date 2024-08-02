@@ -40,14 +40,15 @@
         <div class="main-content">
             <h1>Week Statistics</h1>
             <h3>Question</h3>
-            <h4>Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum nulla accusamus provident id, mollitia autem iure in. Lorem ipsum dolor sit amet1203sdf?</h4> 
+            <form action="/student-stats/info/report?date=<%=ans_data.submited_date%>" method="post">
+            <h4><%=ans_data.question%></h4> 
             <h3>Answer</h3>
             <div id="code-container"></div>
             <h3>Output</h3>
             <div id="output-container"></div>
             <div class="form-container">
-                <input type="text" class="styled-input" id="remarks" placeholder="Remarks" maxlength="55">
-                <input type="text" class="styled-input" placeholder="Marks">
+                <input type="text" name="remarks" class="styled-input" id="remarks" placeholder="Remarks" maxlength="55">
+                <input type="text" name="marks" class="styled-input" placeholder="Marks">
                 <select name="grade" id="grade" class="styled-input">
                     <option value="A+">A+</option>
                     <option value="A">A</option>
@@ -55,23 +56,14 @@
                     <option value="B">B</option>
                     <option value="C">C</option>
                 </select>
-                <button class="styled-button">Submit</button>
+                <button class="styled-button" type="submit">Submit</button>
               </div>
-              
+            </form>
 
             <script>
                 document.addEventListener('DOMContentLoaded', () => {
                     const codeSnippets = [
-                        `def flattenjson(b, delim):
-    val = {}
-    for i in b.keys():
-        if isinstance(b[i], dict):
-            get = flattenjson(b[i], delim)
-            for j in get.keys():
-                val[i + delim + j] = get[j]
-        else:
-            val[i] = b[i]
-    return val`
+                        `<%=ans_data.ans%>`
                     ];
 
                     const container = document.getElementById('code-container');
@@ -110,9 +102,7 @@
             <script>
                 document.addEventListener('DOMContentLoaded', () => {
                     const codeSnippets = [
-                        `Factorial of 5 is 120
-
-=== Code Execution Successful ===`
+                        `<%=ans_data.output%>`
                     ];
 
                     const container = document.getElementById('output-container');

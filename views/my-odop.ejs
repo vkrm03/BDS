@@ -37,22 +37,27 @@
         </div>
         <div class="main-content">
             <h1>ODOP Question</h1>
-            <h4><%=que.question%></h4>
-            <form action="/odop-std-question" method="post">
-                <input type="hidden" name="question" value="<%= que.question %>">
-            <div class="datetime-container">
-                <label for="deadline">Deadline Time :</label>
-                <input type="text" name="deadline" id="deadline" placeholder="<%=que.deadline%>" disabled>
-              </div>  
-              <div class="link-container">
-                <label for="link">Meeting Link :</label>
-                <input type="text" name="deadline" id="link" placeholder="<%=que.meetinglink%>" disabled> <span class="copy-icon" onclick="copyPlaceholder()">&#x2398;</span>
-              </div>  
-            <textarea name="odopans" id="odop-ques" placeholder="Enter the Answer Here"></textarea>
-            <textarea name="odopoutput" id="odop-ques" placeholder="Enter the Output Here"></textarea>
-            <div class="submit-btn"><button class="submit" type="submit">Submit</button></div>
-        </form> 
-        </div>
+            <% if (que.question) { %>
+                <h4><%=que.question%></h4>
+                <form action="/odop-std-question" method="post">
+                    <input type="hidden" name="question" value="<%= que.question %>">
+                <div class="datetime-container">
+                    <label for="deadline">Deadline Time :</label>
+                    <input type="text" name="deadline" id="deadline" placeholder="<%=que.deadline%>" disabled>
+                  </div>  
+                  <div class="link-container">
+                    <label for="link">Meeting Link :</label>
+                    <input type="text" name="deadline" id="link" placeholder="<%=que.meetinglink%>" disabled> <span class="copy-icon" onclick="copyPlaceholder()">&#x2398;</span>
+                  </div>  
+                <textarea name="odopans" id="odop-ques" placeholder="Enter the Answer Here"></textarea>
+                <textarea name="odopoutput" id="odop-ques" placeholder="Enter the Output Here"></textarea>
+                <div class="submit-btn"><button class="submit" type="submit">Submit</button></div>
+            </form> 
+            </div>
+            <% } else { %>
+        <h4>No questions available</h4>
+            <input type="hidden" name="question" value="">
+          <% } %>
     </div>
     <script>
         function copyPlaceholder() {
