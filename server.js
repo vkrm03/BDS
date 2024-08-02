@@ -11,13 +11,17 @@ const login = require("./login")
 const mongoose = require('mongoose');
 
 // mongodb+srv://vkrm:vkrm03@mentormentee.gzg8smk.mongodb.net/BDS_DB
-
-mongoose.connect("mongodb+srv://vkrm:vkrm03@mentormentee.gzg8smk.mongodb.net/BDS_DB").then(() => {
+const uri = "mongodb+srv://vkrm:vkrm03@mentormentee.gzg8smk.mongodb.net/BDS_DB";
+mongoose.connect(uri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    serverSelectionTimeoutMS: 30000
+}).then(() => {
     console.log("Connected to DB");
-  }).catch(err => {
+}).catch(err => {
     console.log(err);
-  });
-
+});
+  
 
 let currnt_Id, currnt_image_url ,currnt_role,currentStudentId,Std,Std_Mentee, Admin,Reg,staff_name = "Vishalini J";
 let std_data = {
