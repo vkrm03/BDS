@@ -13,7 +13,7 @@ const mongoose = require('mongoose');
 
 // mongodb+srv://vkrm:vkrm03@mentormentee.gzg8smk.mongodb.net/BDS_DB
 
-mongoose.connect("mongodb://localhost:27017/BDS_DB").then(() => {
+mongoose.connect("mongodb+srv://vkrm:vkrm03@mentormentee.gzg8smk.mongodb.net/BDS_DB").then(() => {
     console.log("Connected to DB");
   }).catch(err => {
     console.log(err);
