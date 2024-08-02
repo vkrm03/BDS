@@ -1,7 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const pg = require("pg");
-const bcrypt = require('bcrypt');
 const fs = require('fs');
 const { log } = require("console");
 const Students = require("./db")
