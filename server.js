@@ -13,8 +13,6 @@ const mongoose = require('mongoose');
 // mongodb+srv://vkrm:vkrm03@mentormentee.gzg8smk.mongodb.net/BDS_DB
 const uri = "mongodb+srv://vkrm:vkrm03@mentormentee.gzg8smk.mongodb.net/BDS_DB";
 mongoose.connect(uri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
     serverSelectionTimeoutMS: 30000
 }).then(() => {
     console.log("Connected to DB");
