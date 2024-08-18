@@ -83,7 +83,8 @@ app.get("/logout", (req, res) => {
     currnt_Id = null;
     currnt_image_url = null;
     currnt_role = null;
-    Admin = false
+    Admin = false;
+    Std = false;
     res.redirect("/login?logout=true");
 });
 
