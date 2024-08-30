@@ -26,7 +26,7 @@
         <div class="sidebar">
             <h1 class="dash">Dashboard</h1>
             <div class="admin-profile">
-                <div class="admin-icon"><img src="/img/student.jpg" alt="Staff Image"></div>
+                <div class="admin-icon"><img src="<%= student_data.reg_no === '41120134' ? '/img/suhas.jpg' : (student_data.reg_no === '41120007' ? '/img/afiya.jpg' : (student_data.reg_no === '41120051' ? '/img/deepika.jpg' : '/img/student.jpg')) %>" alt="std_mentee_ Image"></div>
                 <p><%=std_data.std_name%></p>
             </div>
             <ul>
